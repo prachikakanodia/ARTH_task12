@@ -1,0 +1,35 @@
+- hosts: myweb
+  tasks:
+  - name: "Install httpd package"
+    package:
+        name: "httpd"
+        state: present
+
+  - name: "Copy file in the managed node"
+    copy:
+       dest: "/var/www/html/index.html"
+       content: "Task-12.1"
+
+  - name: "Start web-service"
+    service:
+          name: "httpd"
+          state: restarted
+
+- hosts: mylb
+  tasks:
+  - name: "Install Haproxy"
+    package: 
+       name: "haproxy"
+       state: present
+
+  - template: 
+       src: "haproxy.cfg.j2"
+       dest: "/etc/haproxy/haproxy.cfg"
+
+  - service:
+       name: "haproxy"
+       state: restarted
+       
+
+
+
